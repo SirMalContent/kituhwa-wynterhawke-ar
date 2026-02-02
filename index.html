@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Kituhwa Wynterhawke</title>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            font-size: 32px;
+            color: #1e3a8a;
+            margin-bottom: 8px;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 24px;
+            font-size: 16px;
+        }
+        
+        model-viewer {
+            width: 100%;
+            height: 500px;
+            background-color: #f8fafc;
+            border-radius: 16px;
+        }
+        
+        .instructions {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 16px 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #1e40af;
+            line-height: 1.6;
+        }
+        
+        .instructions strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 15px;
+            color: #1e3a8a;
+        }
+        
+        .ar-icon {
+            text-align: center;
+            margin-top: 16px;
+            color: #64748b;
+            font-size: 13px;
+        }
+        
+        @media (max-width: 640px) {
+            model-viewer {
+                height: 400px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dr. Kituhwa Wynterhawke</h1>
+        <p class="subtitle">Tap and drag to rotate • Pinch to zoom</p>
+        
+        <model-viewer
+            src="kituhwa-wynterhawke.glb"
+            camera-controls
+            touch-action="pan-y"
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+            ar-placement="floor"
+            shadow-intensity="1"
+            shadow-softness="1"
+            exposure="1"
+            autoplay
+            animation-name="*"
+            camera-orbit="0deg 90deg 2m"
+            min-camera-orbit="auto auto 1m"
+            max-camera-orbit="auto auto 4m"
+            alt="Dr. Kituhwa Wynterhawke - 6'3 animated character"
+        >
+            <button slot="ar-button" style="
+                background: #3b82f6;
+                color: white;
+                border: none;
+                border-radius: 12px;
+                padding: 14px 28px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                position: absolute;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            ">
+                <span style="font-size: 20px;">📱</span>
+                View in Your Space
+            </button>
+        </model-viewer>
+        
+        <div class="instructions">
+            <strong>View in Augmented Reality:</strong>
+            Tap "View in Your Space" to place Dr. Kituhwa Wynterhawke in your real environment. Point your camera at the floor and tap to position him at life-size (6'3).
+            <br><br>
+            <strong>Controls:</strong>
+            Rotate with one finger • Zoom with two fingers • Tap floor to move him around
+        </div>
+        
+        <p class="ar-icon">
+            Works on iOS (Safari) and Android (Chrome)
+        </p>
+    </div>
+    
+    <script>
+        // Wait for model-viewer to load
+        const modelViewer = document.querySelector('model-viewer');
+        
+        // Set real-world scale and animation speed
+        modelViewer.addEventListener('load', () => {
+            // Scale set to 1.0 for proper life-size (6'3)
+            const scale = 1.0;
+            modelViewer.scale = `${scale} ${scale} ${scale}`;
+            
+            // Control animation speed (0.5 = half speed, 1.0 = normal, 2.0 = double speed)
+            const animations = modelViewer.availableAnimations;
+            if (animations && animations.length > 0) {
+                modelViewer.animationName = animations[0];
+                modelViewer.timeScale = 0.5; // Slow down to 50% speed (half speed)
+            }
+            
+            console.log('Model loaded and scaled to:', scale);
+            console.log('Available animations:', animations);
+        });
+        
+        // Force interaction mode for AR
+        modelViewer.addEventListener('ar-status', (event) => {
+            if (event.detail.status === 'session-started') {
+                console.log('AR session started');
+                // Try to enable translation in AR
+                modelViewer.interactionPrompt = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>
